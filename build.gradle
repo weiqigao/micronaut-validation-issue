@@ -7,22 +7,9 @@ plugins {
 mainClassName = 'validation.issue/foo.Main'
 
 dependencies {
-    annotationProcessor('io.micronaut:micronaut-inject-java:1.0.0') {
-        exclude group: 'org.yaml'
-        exclude group: 'javax.annotation'
-    }
-    implementation('io.micronaut:micronaut-inject-java:1.0.0') {
-        exclude group: 'org.yaml'
-        exclude group: 'javax.annotation'
-    }
-    implementation('io.micronaut:micronaut-inject:1.0.0') {
-        exclude group: 'org.yaml'
-        exclude group: 'javax.annotation'
-    }
-    implementation('io.micronaut.configuration:micronaut-hibernate-validator:1.0.0') {
-        exclude group: 'org.yaml'
-        exclude group: 'javax.annotation'
-    }
+    annotationProcessor 'io.micronaut:micronaut-inject-java:1.0.0'
+    implementation 'io.micronaut:micronaut-inject:1.0.0'
+    implementation 'io.micronaut.configuration:micronaut-hibernate-validator:1.0.0'
 }
 
 repositories {
