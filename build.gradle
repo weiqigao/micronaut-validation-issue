@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'net.ltgt.apt' version '0.18'
+}
+
+mainClassName = 'validation.issue/foo.Main'
+
+dependencies {
+    annotationProcessor('io.micronaut:micronaut-inject-java:1.0.0') {
+        exclude group: 'org.yaml'
+        exclude group: 'javax.annotation'
+    }
+    implementation('io.micronaut:micronaut-inject-java:1.0.0') {
+        exclude group: 'org.yaml'
+        exclude group: 'javax.annotation'
+    }
+    implementation('io.micronaut:micronaut-inject:1.0.0') {
+        exclude group: 'org.yaml'
+        exclude group: 'javax.annotation'
+    }
+    implementation('io.micronaut.configuration:micronaut-hibernate-validator:1.0.0') {
+        exclude group: 'org.yaml'
+        exclude group: 'javax.annotation'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+compileJava {
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.filter{!it.name.contains("jsr305")}.asPath,
+                '--patch-module', "java.annotation=${classpath.filter{it.name.contains("jsr305")}.asPath}"
+        ]
+        classpath = files()
+    }
+}
+
+run {
+    doFirst {
+        jvmArgs = [
+                '--illegal-access=permit',
+                '--module-path', classpath.filter{!it.name.contains("jsr305")}.asPath,
+                '--add-modules', 'jdk.unsupported',
+                '--patch-module', "java.annotation=${classpath.filter{it.name.contains("jsr305")}.asPath}",
+                '--module', mainClassName
+        ]
+        classpath = files()
+    }
+}
